@@ -21,7 +21,7 @@ $(function(){
       chrome.storage.sync.set({'number': number});
 
       $('#number').text(number);
-      $('#url').text('');
+      $('#url').val('');
     });
   });
 });
