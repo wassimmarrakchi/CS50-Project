@@ -6,7 +6,7 @@
  -->
 <html>
   <head>
-    <title>Getting Started Extension's Popup</title>
+    <title>Procrastanki</title>
     <style type="text/css">
       body {
         margin: 10px;
@@ -15,33 +15,61 @@
 
       h1 {
         font-size: 15px;
+        margin-bottom: 5px;
       }
 
-      #container {
-        align-items: center;
-        display: flex;
+      h4 {
+        font-style: italic;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        padding-left: 5px;
+      }
+
+      .button {
+        background-color: aqua;
+        border: none;
+        cursor: pointer;
+        margin: 4px 2px;
+        margin-top: 10px;
+        outline: none;
+      }
+
+      .button:hover{
+        background: aqua;
+        opacity: 0.7;
+      }
+
+      .text {
+        background-color: aqua;
+        border: none;
+        margin-right: 5px;
+        height: 20px;
+        border-radius: 10px;
+        padding-left: 5px;
+        outline: none;
+      }
+
+      .wrapper {
+        text-align: center;
         justify-content: space-between;
       }
     </style>
-
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-    -->
     <script src="popup.js"></script>
   </head>
-
-  <body>
-    <h1>What do you want to do?</h1>
-    <div id="container">
-      <span>Add current url:    </span>
-      <button form="blocked" type="button">Add Current</button>
+  <body bgcolor="#FFFF81">
+    <h1>Procrastanki</h1>
+    <h4>Distracted?</h4>
+    <div class="wrapper">
+      <input placeholder="Block a URL" type="text" class="text">
+      <input type="button" class="button" value="Block">
     </div>
-    <div id="container">
-      <span>Add a new flashcard:    </span>
-      <button form="newflash" type="button">Add Flashcard</button>
+    <div class="wrapper">
+      <input type="button" class="button" style="width: 90%;" value="Block Current Site">
     </div>
+    <div class="wrapper">
+      <input type="button" class="button" style="width: 90%;" value="Make Flashcards">
+    </div>
+    <div class="wrapper">
+      <input type="button" class="button" style="width: 90%;" value="Blocked Sites">
   </body>
 </html>

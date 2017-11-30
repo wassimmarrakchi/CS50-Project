@@ -1,13 +1,14 @@
 {
   "manifest_version": 2,
 
-  "name": "ProcrastAnki",
+  "name": "Procrastanki",
   "description": "This extension prevents procrastination in a productive way.",
   "version": "1.0",
 
   "browser_action": {
     "default_icon": "icon.png",
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_title": "Distracted?"
   },
   "permissions": [
     "activeTab",
