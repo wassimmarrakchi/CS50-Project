@@ -6,7 +6,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     let websites = JSON.parse(oldNumber.websites);
     for(let i = 0; i < number; i++) {
       if (tab.url == websites[i]) {
-        chrome.tabs.update(null, {url:chrome.extension.getURL('popup.html')});
+        chrome.tabs.update(null, {url:chrome.extension.getURL('flashcard.html')});
         console.log("Url blocked: ", tab.url);
       }
     }
