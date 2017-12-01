@@ -8,7 +8,7 @@ $(function(){
     }
     else
     {
-      chrome.storage.sync.set({'number': 0});
+      chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards': JSON.stringify([])});
       $('#number').text("0");
     }
 
@@ -57,5 +57,9 @@ $(function(){
           console.log("Number of websites: ", number, "Websites blocked: ", websites);
       });
     });
+  })
+
+  $('#AddFlash').click(function(){
+
   })
 });
