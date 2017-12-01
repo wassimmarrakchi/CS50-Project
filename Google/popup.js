@@ -1,35 +1,43 @@
 $(function(){
 
   // Display the number of websites blocked near the "Blocked Sites" button
-  chrome.storage.sync.get('number', function(blocks){
-    $('#number').text(parseInt(blocks.number));
-    console.log("The number of websites blocked already is ", blocks.number)
+  chrome.storage.sync.get(['number', 'websites'], function(blocks){
+    if(blocks.number)
+    {
+      $('#number').text(parseInt(blocks.number));
+    }
+    else
+    {
+      chrome.storage.sync.set({'number': 0});
+      $('#number').text("0");
+    }
+
+    console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites);
   })
 
+  // Clear all blocked websites
+  $('#sites').click(function(){
+    chrome.storage.sync.clear();
+    $('#number').text("0");
+    chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([])});
+    console.log("All websites have been cleared");
+  });
 
-  // Block a typed array
+  // Add url to blocked websites
   $('#Block').click(function(){
-
-      chrome.storage.sync.get('number', function(oldNumber){
-        number = parseInt(oldNumber);
-        console.log("The new number of websites blocked is ", number);
-      });
-
-      // Add the website to the list of blocked websites and increment by one the
-      // number of websites blocked
-      var url = $('#url').val().toString();
-      if(url){
-        number +=1;
-        chrome.storage.sync.set({number : url})
-        chrome.storage.sync.set({'number': number});
-        $('#number').text(toString(number));
-        $('#url').val('');
-        };
-
-        for(let i = 0; i < number; i++) {
-          chrome.storage.sync.get(toString(i), function(result){
-              console.log(result.i);
-          });
-        };
+      chrome.storage.sync.get(['number', 'websites'], function(oldNumber){
+        let number = parseInt(oldNumber.number);
+        let websites = JSON.parse(oldNumber.websites);
+        let url = $('#url').val();
+        if(url){
+          number += 1;
+          websites.push(url);
+          chrome.storage.sync.set({'websites' : JSON.stringify(websites)})
+          chrome.storage.sync.set({'number': number});
+          $('#number').text(number);
+          $('#url').val('');
+          console.log("Number of websites: ", number, "Websites blocked: ", websites);
+          };
+        });
       });
 });
