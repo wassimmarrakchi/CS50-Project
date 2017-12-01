@@ -10,13 +10,11 @@ $(function(){
 	        console.log("temp: ", temp);
     	}
     	initial = pile[Math.floor(Math.random() * pile.length)];
-<<<<<<< HEAD
     	console.log("pile: ", pile);
-=======
->>>>>>> 8667ebcb6a547ba06865a0605d0e9f79b278a5ce
     	console.log("initial: ", initial);
     	pile.splice(initial, 1);
-    	let question = pile[initial];
+    	let question = initial;
+        $("#question").text(question);
 
     });
 
