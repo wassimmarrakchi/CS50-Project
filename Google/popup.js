@@ -1,13 +1,18 @@
-chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards':JSON.stringify({}), 'numberFlash':0});
-
 $(function()
 {
   // Display the number of websites blocked and number of flashcards near the "Blocked Sites" button and the "Make flashcards" button respectively
   chrome.storage.sync.get(['number', 'numberFlash', 'websites', 'flashcards'], function(blocks)
   {
-      $('#number').text(parseInt(blocks.number));
-      $('#numberFlash').text(parseInt(blocks.numberFlash))
-      console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites, "Number of flashcards: ", blocks.numberFlash, " Flashcards: ", blocks.flashcards);
+      if(blocks.number >= 0 || blocks.numberFlash >= 0)
+      {
+        $('#number').text(parseInt(blocks.number));
+        $('#numberFlash').text(parseInt(blocks.numberFlash))
+        console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites, "Number of flashcards: ", blocks.numberFlash, " Flashcards: ", blocks.flashcards);
+      }
+      else
+      {
+        chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards':JSON.stringify({}), 'numberFlash':0});
+      }
   });
 
   // Load the existant flashcards in the dropdownmenu
