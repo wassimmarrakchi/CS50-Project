@@ -40,6 +40,25 @@ $(function(){
           };
         });
       });
+
+  // Add current site to the blocked websites
+  $('#current').click(function(){
+    chrome.tabs.query({'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT},
+      function(tabs){
+        let current = tabs[0].url;
+        chrome.storage.sync.get(['number', 'websites'], function(oldNumber){
+          let number = parseInt(oldNumber.number);
+          let websites = JSON.parse(oldNumber.websites);
+          number++;
+          websites.push(current);
+          chrome.storage.sync.set({'websites' : JSON.stringify(websites)})
+          chrome.storage.sync.set({'number': number});
+          $('#number').text(number);
+          console.log("Number of websites: ", number, "Websites blocked: ", websites);
+      });
+    });
+  })
+
 });
 
 // chrome.tabs.onUpdated.addListener(function(url){
@@ -55,10 +74,10 @@ $(function(){
 
 chrome.tabs.onUpdated.addListener(function(changeInfo) {
    alert(changeInfo.url);
-}); 
+});
 
 chrome.tabs.onActivated.addListener(function(activeInfo) {
   chrome.tabs.get(activeInfo.tabId, function(tab){
      console.log(tab.url);
   });
-}); 
+});
