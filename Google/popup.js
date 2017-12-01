@@ -2,14 +2,14 @@ $(function(){
 
   // Display the number of websites blocked near the "Blocked Sites" button
   chrome.storage.sync.get(['number', 'numberFlash', 'websites', 'flashcards'], function(blocks){
-    if(blocks)
+    if(blocks.number || blocks.numberFlash)
     {
       $('#number').text(parseInt(blocks.number));
-      ('#numberFlash').text(parseInt(blocks.numberFlash))
+      $('#numberFlash').text(parseInt(blocks.numberFlash))
     }
     else
     {
-      chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards': JSON.stringify([]), 'numberFlash':0});
+      chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards': JSON.stringify({}), 'numberFlash':0});
       $('#number').text("0");
       $('#numberFlash').text("0")
     }
@@ -22,7 +22,7 @@ $(function(){
     chrome.storage.sync.clear();
     $('#number').text("0");
     $('#numberFlash').text("0");
-    chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards':JSON.stringify([]), 'numberFlash':0});
+    chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards':JSON.stringify({}), 'numberFlash':0});
     console.log("All websites and flashcards have been cleared");
   });
 
@@ -70,15 +70,18 @@ $(function(){
       let flashNumber = parseInt(oldFlashcards.numberFlash);
       if(front && back)
       {
-        flashcards[front] = back;
-        flashNumber++;
+        if(!flashcards[front])
+        {
+          flashNumber++;
+        }
+        flashcards[front]=back;
         chrome.storage.sync.set({'numberFlash':flashNumber, 'flashcards' : JSON.stringify(flashcards)});
         $('#frontAdd').val('');
         $('#backAdd').val('');
         $('#numberFlash').text(flashNumber);
         console.log("Flashcard added, ", front, " : ", back);
-        console.log(flashcards);
+        console.log("Existant flashcards: ", flashcards);
       };
     });
-  })
+  });
 });
