@@ -2,7 +2,7 @@
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
   console.log("ping at", tab.url)
   chrome.storage.sync.get(toString(tab.url), function(block){
-  	if (block == true) {
+  	if (block != true) {
       chrome.storage.sync.get(['number', 'websites'], function(oldNumber){
         let number = parseInt(oldNumber.number);
         let websites = JSON.parse(oldNumber.websites);
