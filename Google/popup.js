@@ -2,6 +2,11 @@ let blocked =[];
 
 
 $(function(){
+
+  chrome.storage.sync.get('number', function(blocks){
+    $('#number').text(blocks.number);
+  })
+
   $('#Block').click(function(){
 
       number = blocked.length;
