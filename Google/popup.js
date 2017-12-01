@@ -1,6 +1,6 @@
 $(function()
 {
-  // Display the number of websites blocked and number of flashcards near the "Blocked Sites" button and the "Make flashcards" button
+  // Display the number of websites blocked and number of flashcards near the "Blocked Sites" button and the "Make flashcards" button respectively
   chrome.storage.sync.get(['number', 'numberFlash', 'websites', 'flashcards'], function(blocks){
     if(blocks.number || blocks.numberFlash)
     {
@@ -18,22 +18,40 @@ $(function()
   })
 
   // Load the existant flashcards in the dropdownmenu
-  $('#flashcards_options').click(function()
-  {
-    chrome.storage.sync.get(['numberFlash', 'flashcards'], function(blocks)
+  chrome.storage.sync.get(['numberFlash', 'flashcards'], function(blocks){
+    let pile = [];
+    var x = document.getElementById("flashcards_options");
+    let unordered_cards = JSON.parse(blocks.flashcards);
+  	let temp;
+  	for(temp in unordered_cards)
     {
-      var x = document.getElementById("flashcards_options");
-      for(let i = 0; i < blocks.numberFlash; i++)
-      {
-        var option = document.createElement("option");
-        option.text = "Kiwi";
-      }
-    });
+       pile.push(temp);
+  	}
+    for(let i = 0; i < blocks.numberFlash; i++)
+    {
+      var option = document.createElement("option");
+      option.id = pile[i];
+      option.text = pile[i];
+      x.add(option);
+    }
   });
 
   // Clear all blocked websites and all flashcards created
   $('#sites').click(function(){
-    chrome.storage.sync.clear();
+    chrome.storage.sync.get('flashcards', function(blocks)
+    {
+      let pile = [];
+      let unordered_cards = JSON.parse(blocks.flashcards);
+    	let temp;
+    	for(temp in unordered_cards)
+      {
+         pile.push(temp);
+    	}
+      for(let i = 0; i < pile.length; i++)
+      {
+        $("#flashcards_options option[id=" + pile[i] + "]").remove();
+      }
+    });
     $('#number').text("0");
     $('#numberFlash').text("0");
     chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards':JSON.stringify({}), 'numberFlash':0});
@@ -88,15 +106,44 @@ $(function()
         if(!flashcards[front])
         {
           flashNumber++;
+          var x = document.getElementById("flashcards_options");
+          var option = document.createElement("option");
+          option.id = front;
+          option.text = front;
+          x.add(option);
         }
         flashcards[front]=back;
         chrome.storage.sync.set({'numberFlash':flashNumber, 'flashcards' : JSON.stringify(flashcards)});
         $('#frontAdd').val('');
         $('#backAdd').val('');
         $('#numberFlash').text(flashNumber);
-        console.log("Flashcard added, ", front, " : ", back);
+
+        console.log("Flashcard added,: ", front, " : ", back);
         console.log("Existant flashcards: ", flashcards);
       };
     });
+  });
+
+  // Delete one flashcard
+  $('#DelFlash').click(function(){
+    let card = $('#flashcards_options').val();
+    if(card != "Select the flashcard you want to delete")
+    {
+      $("#flashcards_options option[id=" + card + "]").remove();
+      chrome.storage.sync.get(['flashcards', 'numberFlash'], function(blocks){
+        let flashcard = JSON.parse(blocks.flashcards);
+        let numberFlash = blocks.numberFlash;
+        delete flashcard[card];
+        numberFlash--;
+        $('#numberFlash').text(numberFlash);
+        // if(!flashcard)
+        // {
+        //   flashcard ={};
+        // }
+        chrome.storage.sync.set({'flashcards' : JSON.stringify(flashcard), 'numberFlash' : numberFlash});
+        console.log("Flahscard deleted: ", card);
+        console.log("Existant flashcards: ", flashcard);
+      });
+    };
   });
 });
