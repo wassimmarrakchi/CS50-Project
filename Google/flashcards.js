@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-$(function(){
-	//Generate array of flashcards
-	chrome.storage.sync.get(['numberFlash', 'flashcards'], function(current_flashcards){
-=======
 $(function()
 {
 	//Generate intial flashcard
@@ -23,7 +18,7 @@ $(function()
 	// Flashcard check
 	$('#check').click(function(){
 	  console.log("ping click")
-      question 
+      question
 =======
     	initial = pile[Math.floor(Math.random() * pile.length)];
     	pile.splice(initial, 1);
@@ -35,10 +30,9 @@ $(function()
 	$('#check').click(function()
 	{
 			console.log("ping click")
->>>>>>> 978c318388d89c19dd09a7335540816c75e0efde
 	});
 
-    function ask() {
+  function ask() {
         initial = pile[Math.floor(Math.random() * pile.length)];
         console.log("pile: ", pile);
         console.log("initial: ", initial);
