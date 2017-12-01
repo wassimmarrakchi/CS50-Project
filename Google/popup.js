@@ -61,23 +61,16 @@ $(function(){
 
 });
 
-// chrome.tabs.onUpdated.addListener(function(url){
-//   // for(let i = 0; i < number; i++) {
-//   //         chrome.storage.sync.get(toString(i), function(result, url){
-//   //             if (result == url)
-//   //               chrome.tabs.update(integer tabId, object updateProperties, function callback);
-//   //         });
-//   if (url == 'https://www.google.com/') {
-//     chrome.tabs.update({url:'https://reddit.com'});
-//   }
-// });
-
-chrome.tabs.onUpdated.addListener(function(changeInfo) {
-   alert(changeInfo.url);
-});
-
-chrome.tabs.onActivated.addListener(function(activeInfo) {
-  chrome.tabs.get(activeInfo.tabId, function(tab){
-     console.log(tab.url);
+// Listens for blocked sites
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+  chrome.storage.sync.get(['number', 'websites'], function(oldNumber){
+    let number = parseInt(oldNumber.number);
+    let websites = JSON.parse(oldNumber.websites);
+    for(let i = 0; i < number; i++) {
+      if (changeInfo.url == websites[i]) {
+        chrome.tabs.update(null, {url:"http://en.wikipedia.org"});
+        console.log("Url blocked: ", tab.url);
+      }
+    }
   });
 });
