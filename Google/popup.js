@@ -18,22 +18,40 @@ $(function()
   })
 
   // Load the existant flashcards in the dropdownmenu
-  $('#flashcards_options').click(function()
-  {
-    chrome.storage.sync.get(['numberFlash', 'flashcards'], function(blocks)
+  chrome.storage.sync.get(['numberFlash', 'flashcards'], function(blocks){
+    let pile = [];
+    var x = document.getElementById("flashcards_options");
+    let unordered_cards = JSON.parse(blocks.flashcards);
+  	let temp;
+  	for(temp in unordered_cards)
     {
-      var x = document.getElementById("flashcards_options");
-      for(let i = 0; i < blocks.numberFlash; i++)
-      {
-        var option = document.createElement("option");
-        option.text = "Kiwi";
-      }
-    });
+       pile.push(temp);
+  	}
+    for(let i = 0; i < blocks.numberFlash; i++)
+    {
+      var option = document.createElement("option");
+      option.id = pile[i];
+      option.text = pile[i];
+      x.add(option);
+    }
   });
 
   // Clear all blocked websites and all flashcards created
   $('#sites').click(function(){
-    chrome.storage.sync.clear();
+    chrome.storage.sync.get('numberFlash', function(numberFlash)
+    {
+      var x = document.getElementById("flashcards_options");
+      var option;
+      for(let i = 0; i <= numberFlash.numberFlash; i++)
+      {
+        x.remove(option);
+      }
+    });
+    var x = document.getElementById("flashcards_options");
+    var option = document.createElement("option");
+    option.id = "0";
+    option.text = "Select the flashcard you want to delete";
+    x.add(option);
     $('#number').text("0");
     $('#numberFlash').text("0");
     chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards':JSON.stringify({}), 'numberFlash':0});
@@ -88,12 +106,18 @@ $(function()
         if(!flashcards[front])
         {
           flashNumber++;
+          var x = document.getElementById("flashcards_options");
+          var option = document.createElement("option");
+          option.id = flashNumber;
+          option.text = front;
+          x.add(option);
         }
         flashcards[front]=back;
         chrome.storage.sync.set({'numberFlash':flashNumber, 'flashcards' : JSON.stringify(flashcards)});
         $('#frontAdd').val('');
         $('#backAdd').val('');
         $('#numberFlash').text(flashNumber);
+
         console.log("Flashcard added, ", front, " : ", back);
         console.log("Existant flashcards: ", flashcards);
       };
