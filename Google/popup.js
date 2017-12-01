@@ -1,26 +1,29 @@
 $(function(){
 
   // Display the number of websites blocked near the "Blocked Sites" button
-  chrome.storage.sync.get(['number', 'websites'], function(blocks){
-    if(blocks.number)
+  chrome.storage.sync.get(['number', 'numberFlash', 'websites', 'flashcards'], function(blocks){
+    if(blocks)
     {
       $('#number').text(parseInt(blocks.number));
+      ('#numberFlash').text(parseInt(blocks.numberFlash))
     }
     else
     {
-      chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards': JSON.stringify([])});
+      chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards': JSON.stringify([]), 'numberFlash':0});
       $('#number').text("0");
+      $('#numberFlash').text("0")
     }
 
-    console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites);
+    console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites, "Number of flashcards: ", blocks.numberFlash, " Flashcards: ", blocks.flashcards);
   })
 
-  // Clear all blocked websites
+  // Clear all blocked websites and all flashcards created
   $('#sites').click(function(){
     chrome.storage.sync.clear();
     $('#number').text("0");
-    chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([])});
-    console.log("All websites have been cleared");
+    $('#numberFlash').text("0");
+    chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards':JSON.stringify([]), 'numberFlash':0});
+    console.log("All websites and flashcards have been cleared");
   });
 
   // Add url to blocked websites
@@ -60,6 +63,22 @@ $(function(){
   })
 
   $('#AddFlash').click(function(){
-
+    chrome.storage.sync.get(['numberFlash', 'flashcards'], function(oldFlashcards){
+      let flashcards = JSON.parse(oldFlashcards.flashcards);
+      let front = $('#frontAdd').val();
+      let back = $('#backAdd').val();
+      let flashNumber = parseInt(oldFlashcards.numberFlash);
+      if(front && back)
+      {
+        flashcards[front] = back;
+        flashNumber++;
+        chrome.storage.sync.set({'numberFlash':flashNumber, 'flashcards' : JSON.stringify(flashcards)});
+        $('#frontAdd').val('');
+        $('#backAdd').val('');
+        $('#numberFlash').text(flashNumber);
+        console.log("Flashcard added, ", front, " : ", back);
+        console.log(flashcards);
+      };
+    });
   })
 });
