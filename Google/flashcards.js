@@ -9,7 +9,7 @@ $(function(){
 	           pile.push(temp);
 	       	}
     	}
-    	initial = obj[pile[Math.floor(Math.random() * pile.length)]];
+    	initial = pile[Math.floor(Math.random() * pile.length)];
     	console.log("initial: ", initial)
     	pile.splice(initial, 1);
     	let question = pile[initial];
