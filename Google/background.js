@@ -9,7 +9,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         for(let i = 0; i < number; i++) {
           if (tab.url == websites[i]) {
             chrome.storage.sync.set({'visited' : tab.url});
-            chrome.tabs.update(null, {url:chrome.extension.getURL('flashcard.html')});
+            chrome.tabs.update({url:chrome.extension.getURL('flashcard.html')});
             console.log("Url blocked: ", tab.url);
           }
         }
