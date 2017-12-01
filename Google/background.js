@@ -6,8 +6,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     let websites = JSON.parse(oldNumber.websites);
     for(let i = 0; i < number; i++) {
       if (tab.url == websites[i]) {
-        chrome.tabs.update(null, {url:"http://en.wikipedia.org"});
-        // chrome.windows.create({'url': 'http://en.wikipedia.org'});
+        chrome.tabs.update(null, {url:chrome.extension.getURL('popup.html')});
         console.log("Url blocked: ", tab.url);
       }
     }
