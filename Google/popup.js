@@ -1,7 +1,8 @@
 $(function()
 {
   // Display the number of websites blocked and number of flashcards near the "Blocked Sites" button and the "Make flashcards" button respectively
-  chrome.storage.sync.get(['number', 'numberFlash', 'websites', 'flashcards'], function(blocks){
+  chrome.storage.sync.get(['number', 'numberFlash', 'websites', 'flashcards'], function(blocks)
+  {
       $('#number').text(parseInt(blocks.number));
       $('#numberFlash').text(parseInt(blocks.numberFlash))
       console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites, "Number of flashcards: ", blocks.numberFlash, " Flashcards: ", blocks.flashcards);
