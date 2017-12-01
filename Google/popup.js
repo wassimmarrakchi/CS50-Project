@@ -47,7 +47,8 @@ $(function()
   // Add url to blocked websites
   $('#Block').click(function()
   {
-      chrome.storage.sync.get(['number', 'websites'], function(oldNumber){
+      chrome.storage.sync.get(['number', 'websites'], function(oldNumber)
+      {
         let number = oldNumber.number;
         let websites = JSON.parse(oldNumber.websites);
         let url = $('#url').val();
@@ -61,7 +62,7 @@ $(function()
           console.log("Number of websites: ", number, "Websites blocked: ", websites);
         };
       });
-    });
+  });
 
   // Add current site to the blocked websites
   $('#current').click(function()
