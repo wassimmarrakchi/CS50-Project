@@ -1,7 +1,10 @@
+chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards':JSON.stringify({}), 'numberFlash':0});
+
 $(function()
 {
   // Display the number of websites blocked and number of flashcards near the "Blocked Sites" button and the "Make flashcards" button respectively
-  chrome.storage.sync.get(['number', 'numberFlash', 'websites', 'flashcards'], function(blocks){
+  chrome.storage.sync.get(['number', 'numberFlash', 'websites', 'flashcards'], function(blocks)
+  {
       $('#number').text(parseInt(blocks.number));
       $('#numberFlash').text(parseInt(blocks.numberFlash))
       console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites, "Number of flashcards: ", blocks.numberFlash, " Flashcards: ", blocks.flashcards);
@@ -47,7 +50,8 @@ $(function()
   // Add url to blocked websites
   $('#Block').click(function()
   {
-      chrome.storage.sync.get(['number', 'websites'], function(oldNumber){
+      chrome.storage.sync.get(['number', 'websites'], function(oldNumber)
+      {
         let number = oldNumber.number;
         let websites = JSON.parse(oldNumber.websites);
         let url = $('#url').val();
@@ -61,7 +65,7 @@ $(function()
           console.log("Number of websites: ", number, "Websites blocked: ", websites);
         };
       });
-    });
+  });
 
   // Add current site to the blocked websites
   $('#current').click(function()
@@ -69,16 +73,19 @@ $(function()
     chrome.tabs.query({'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT}, function(tabs)
       {
         let current = tabs[0].url;
-        chrome.storage.sync.get(['number', 'websites'], function(oldNumber)
+        if(current != "chrome-extension://hafbfihabfkkfajojhmgklmcgdokjklj/flashcard.html")
         {
-          let number = parseInt(oldNumber.number);
-          let websites = JSON.parse(oldNumber.websites);
-          number++;
-          websites.push(current);
-          chrome.storage.sync.set({'number': number, 'websites' : JSON.stringify(websites)})
-          $('#number').text(number);
-          console.log("Number of websites: ", number, "Websites blocked: ", websites);
-        });
+          chrome.storage.sync.get(['number', 'websites'], function(oldNumber)
+          {
+            let number = parseInt(oldNumber.number);
+            let websites = JSON.parse(oldNumber.websites);
+            number++;
+            websites.push(current);
+            chrome.storage.sync.set({'number': number, 'websites' : JSON.stringify(websites)})
+            $('#number').text(number);
+            console.log("Number of websites: ", number, "Websites blocked: ", websites);
+          });
+        }
       });
   });
 
