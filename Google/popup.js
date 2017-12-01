@@ -17,6 +17,20 @@ $(function()
     console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites, "Number of flashcards: ", blocks.numberFlash, " Flashcards: ", blocks.flashcards);
   })
 
+  // Load the existant flashcards in the dropdownmenu
+  $('#flashcards_options').click(function()
+  {
+    chrome.storage.sync.get(['numberFlash', 'flashcards'], function(blocks)
+    {
+      var x = document.getElementById("flashcards_options");
+      for(let i = 0; i < blocks.numberFlash; i++)
+      {
+        var option = document.createElement("option");
+        option.text = "Kiwi";
+      }
+    });
+  });
+
   // Clear all blocked websites and all flashcards created
   $('#sites').click(function(){
     chrome.storage.sync.clear();
