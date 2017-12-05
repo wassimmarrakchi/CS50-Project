@@ -54,6 +54,8 @@ $(function()
 	// Checks user input
 	function check()
 	{
+		let elem = document.getElementById("result_box");
+
 		// Check if user input matches correct answer
 		if ($('#answer').val() == unordered_cards[pile[location]])
 		{
@@ -62,15 +64,20 @@ $(function()
 			// Remeber total correct answers
 			total_correct++;
 
+			// Update page
 			$("#answer").val('');
-
 			$("#total_correct").text(total_correct);
+			$("#result").text("Correct!");
+			elem.setAttribute("style","visibility: visible; background-color: lime;");
 		}
 
 		// Show incorrect answer
 		else
 		{
-			$("#answer").text(unordered_cards[pile[location]]);
+			// Update page
+			$("#answer").val('');
+			$("#result").text("Correct Answer: " + unordered_cards[pile[location]]);
+			elem.setAttribute("style","visibility: visible; background-color: red;");
 		};
 
 		// Check if sufficient correct answer
