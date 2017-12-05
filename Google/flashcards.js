@@ -24,30 +24,20 @@ $(function()
 	     pile.push(temp);
 		};
 
-		console.log("unordered_cards: ", unordered_cards);
-		console.log("pile: ", pile);
-		console.log("pile length: ", pile.length);
-		console.log("questions before: ", questions);
-
 		// Define total correct answers to pass (default 10 unless fewer exist)
 		if (pile.length < questions)
 		{
 			questions = pile.length;
-			console.log("questions after: ", questions);
 		};
 
 		// Render total number of questions
 		$("#questions").text(questions);
 
-		// Render question
 		ask();
-
-		console.log("answer: ", unordered_cards[pile[location]]);
 
 		// Listen for user submission
 		$('#check').click(function()
 		{
-			console.log("pile after answer: ", pile);
 			check();
 		});
 	});
@@ -68,20 +58,17 @@ $(function()
 		// Check if user input matches correct answer
 		if ($('#answer').val() == unordered_cards[pile[location]])
 		{
-			// Remove question from pile
 			pile.splice(location, 1);
 
 			// Remeber total correct answers
 			total_correct++;
 
-			// Clear input box
 			$("#answer").val('');
-
-			// Render new total correct answers
+			
 			$("#total_correct").text(total_correct);
-
-			console.log("correct!");
 		}
+
+		// Show incorrect answer
 		else
 		{
 			$("#answer").text(unordered_cards[pile[location]]);
