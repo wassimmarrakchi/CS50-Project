@@ -1,17 +1,17 @@
 $(function()
 {
   // Display the number of websites blocked and number of flashcards near the "Blocked Sites" button and the "Make flashcards" button respectively
-  chrome.storage.sync.get(['number', 'numberFlash', 'websites', 'flashcards'], function(blocks)
+  chrome.storage.sync.get(['number', 'numberFlash', 'websites', 'flashcards', 'last_block'], function(blocks)
   {
       if(blocks.number >= 0 || blocks.numberFlash >= 0)
       {
         $('#number').text(parseInt(blocks.number));
         $('#numberFlash').text(parseInt(blocks.numberFlash))
-        console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites, "Number of flashcards: ", blocks.numberFlash, " Flashcards: ", blocks.flashcards);
+        console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites, "Number of flashcards: ", blocks.numberFlash, " Flashcards: ", blocks.flashcards, "Last block: ", blocks.last_block);
       }
       else
       {
-        chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards':JSON.stringify({}), 'numberFlash':0});
+        chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards':JSON.stringify({}), 'numberFlash':0, 'last_block': ""});
       }
   });
 
@@ -48,7 +48,7 @@ $(function()
     });
     $('#number').text("0");
     $('#numberFlash').text("0");
-    chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards':JSON.stringify({}), 'numberFlash':0});
+    chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards':JSON.stringify({}), 'numberFlash':0, 'last_block': ""});
     console.log("All websites and flashcards have been cleared");
   });
 
@@ -67,9 +67,9 @@ $(function()
           websites.push(url);
           chrome.storage.sync.set({'number': number, 'websites' : JSON.stringify(websites)});
           $('#number').text(number);
-          $('#url').val('');
           console.log("Number of websites: ", number, "Websites blocked: ", websites);
         };
+        $('#url').val('');
       });
   });
 
