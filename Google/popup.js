@@ -38,17 +38,17 @@ $(function()
   // Clear all blocked websites and all flashcards created
   $('#sites').click(function()
   {
-    chrome.storage.sync.get('flashcards', function(blocks)
-    {
-      let unordered_cards = JSON.parse(blocks.flashcards);
-      for(temp in unordered_cards)
-      {
-        $("#flashcards_options option[id=" + temp + "]").remove();
-      }
-    });
+    // chrome.storage.sync.get('flashcards', function(blocks)
+    // {
+    //   let unordered_cards = JSON.parse(blocks.flashcards);
+    //   for(temp in unordered_cards)
+    //   {
+    //     $("#flashcards_options option[id=" + temp + "]").remove();
+    //   }
+    // });
     $('#number').text("0");
-    $('#numberFlash').text("0");
-    chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards':JSON.stringify({}), 'numberFlash':0, 'last_block': ""});
+    /*$('#numberFlash').text("0");*/
+    chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), /* 'flashcards':JSON.stringify({}), 'numberFlash':0,*/ 'last_block': ""});
     console.log("All websites and flashcards have been cleared");
   });
 
