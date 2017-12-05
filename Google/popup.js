@@ -7,7 +7,7 @@ $(function()
       {
         $('#number').text(parseInt(blocks.number));
         $('#numberFlash').text(parseInt(blocks.numberFlash))
-        console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites, "Number of flashcards: ", blocks.numberFlash, " Flashcards: ", blocks.flashcards, "Last block: ", blocks.last_block, "block: ", blocks.block);
+        console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites, "Number of flashcards: ", blocks.numberFlash, " Flashcards: ", blocks.flashcards, "Last block: ", blocks.last_block);
       }
       else
       {
