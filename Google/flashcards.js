@@ -71,7 +71,7 @@ $(function()
 			elem.setAttribute("style","visibility: visible; background-color: lime;");
 		}
 
-		// Show incorrect answer
+		// Incorrect answer
 		else
 		{
 			// Update page
