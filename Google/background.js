@@ -11,6 +11,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab)
         url = "^.*" + websites[i] + ".*$";
         if (tab.url.match(url))
         {
+          chrome.storage.sync.set({'last_block': tab.url});
           chrome.tabs.update({url:chrome.extension.getURL('flashcard.html')});
           console.log("Url blocked: ", tab.url);
         };

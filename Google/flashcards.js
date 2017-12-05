@@ -83,7 +83,10 @@ $(function()
 		// Check if sufficient correct answer
 		if (total_correct == questions)
 		{
-			chrome.tabs.update({url:chrome.extension.getURL('popup.html')});
+			chrome.storage.sync.get('last_block', function(newUrl)
+			{
+				chrome.tabs.update({url:chrome.extension.getURL(newUrl.last_block)});
+			});
 		}
 		else
 		{
