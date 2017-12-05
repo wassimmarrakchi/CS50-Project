@@ -38,11 +38,12 @@ chrome.storage.sync.get(['numberFlash', 'flashcards'], function(current_flashcar
 
 	// Render question
 	ask(pile)
+});
 
-	$('#check').click(function()
-	{
-		check(total_correct, questions, pile, location, unordered_cards)
-	});
+// Listen for user submission
+$('#check').click(function()
+{
+	check(total_correct, questions, pile, location, unordered_cards)
 });
 
 // Displays random question
