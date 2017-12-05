@@ -6,7 +6,7 @@ chrome.storage.sync.get(['numberFlash', 'flashcards'], function(current_flashcar
 	let questions = 10; // Default number of sufficient questions
 	let total_correct = 0; // How many correct answers user has input
 	let location = 0; // Location of random question in array
-	let unordered_cards = JSON.parse(current_flashcards.flashcards); // card object
+	let unordered_cards = JSON.parse(current_flashcards.flashcards); // Card object
 
 	// Ensure flashcards
 	if (Object.keys(unordered_cards).length == 0)
