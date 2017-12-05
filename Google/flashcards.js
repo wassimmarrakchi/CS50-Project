@@ -11,7 +11,7 @@ $(function()
 	{
 		unordered_cards = JSON.parse(current_flashcards.flashcards);
 
-		// Ensure flashcards
+		// Make sure there are flashcards
 		if (Object.keys(unordered_cards).length == 0)
 		{
 			chrome.tabs.update({url:chrome.extension.getURL('error.html')});
@@ -30,7 +30,6 @@ $(function()
 			questions = pile.length;
 		};
 
-		// Render total number of questions
 		$("#questions").text(questions);
 
 		ask();
