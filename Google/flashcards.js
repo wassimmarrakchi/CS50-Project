@@ -83,11 +83,10 @@ $(function()
 		// Check if sufficient correct answer
 		if (total_correct == questions)
 		{
-			chrome.storage.sync.get(['last_block', 'websites', 'last_website', 'number'], function(newUrl)
+			chrome.storage.sync.get(['last_block', 'websites'], function(newUrl)
 			{
-				let websites = JSON.parse(newUrl.websites);
-				websites.splice(websites.indexOf(newUrl.last_website));
-				chrome.storage.sync.set({'websites' : websites, 'number': newUrl.number - 1});
+				let d = new Date();
+				chrome.storage.sync.set({'Unlocked' : d.getTime()});
 				chrome.tabs.update({url: newUrl.last_block});
 			});
 		}
