@@ -39,20 +39,19 @@ h4 {
   background-color: aqua;
   border: none;
   cursor: pointer;
-  margin: 4px 2px;
-  margin-top: 10px;
+  margin: 5px;
   outline: none;
 }
 
-.button:hover{
+.button:hover {
   background: aqua;
   opacity: 0.7;
 }
 
 .flash {
+  background-color: aqua;
   width: 80%;
   height: 60px;
-  background-color: aqua;
   border: none;
   outline: none;
   border-radius: 10px;
@@ -64,14 +63,26 @@ h4 {
   margin-right: 5px;
   height: 20px;
   border-radius: 10px;
-  padding-left: 5px;
   outline: none;
-  width: 300px;
+}
+
+.flash_input {
+  width: 20%;
+}
+
+.url_input {
+  width: 70%;
+}
+
+.flashcards_redirect {
+  width: 80%;
+  height: 40px;
+  margin: auto;
+  margin-top: 10px;
 }
 
 .wrapper {
   text-align: center;
-  justify-content: space-between;
 }
 
 .hidden {

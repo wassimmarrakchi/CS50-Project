@@ -1,9 +1,4 @@
 <!doctype html>
-<!--
- This page is shown when the extension button is clicked, because the
- "browser_action" field in manifest.json contains the "default_popup" key with
- value "popup.html".
- -->
 <html>
   <head>
     <title>Procrastanki</title>
@@ -15,31 +10,27 @@
     <h1>Procrastanki</h1>
     <h4>Distracted?</h4>
     <div class="wrapper">
-      <input placeholder="Block a URL: hostname.domain" type="text" class="text" id="url">
-      <input type="submit" class="button" id="Block" value="Block">
+      <input class="text url_input" placeholder="Block a URL: hostname.domain" type="text" id="url">
+      <input class="button" type="submit" id="Block" value="Block">
     </div>
     <div class="wrapper">
-      <input type="button" class="button" style="width: 90%;" value="Block Current Page" id="current">
+      <input type="button" class="button" value="Block Current Page" id="current">
+      <input type="button" class="button" value="Clear Blocked Sites" id="sites">
     </div>
     <div class="wrapper">
-      <input type="button" class="button" style="width: 90%;" value="Blocked Sites" id="sites">
-      <span id="number"> 0 </span>
-    </div>
-    <div class="wrapper">
-      <input placeholder="Front flashcard" type="text" class="text" id="frontAdd">
-      <input placeholder="Back flashcard" type="text" class="text" id="backAdd">
-    </div>
-    <div class="wrapper">
-      <input type="button" class="button" style="width: 90%;" value="Make Flashcard" id="AddFlash">
+      <input class="text flash_input" placeholder="Front flashcard" type="text" id="frontAdd">
+      <input class="text flash_input" placeholder="Back flashcard" type="text" id="backAdd">
+      <input type="button" class="button" value="Make Flashcard" id="AddFlash">
     </div>
     <div class="wrapper" id="div1">
       <select id="flashcards_options">
         <option id="0" selected="selected">Select the flashcard you want to delete</option>
       </select>
+      <input class="button" type="button" value="Delete Flashcard" id="DelFlash">
     </div>
     <div class="wrapper">
-      <input type="button" class="button" style="width: 90%;" value="Delete Flashcard" id="DelFlash">
-      <span id="numberFlash"> 0 </span>
+      Total Flashcards: <span id="numberFlash" style="margin-right: 5px;"> 0 </span>
+      Total Blocked Site: <span id="number"> 0 </span>
     </div>
   </body>
 </html>
