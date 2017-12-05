@@ -74,6 +74,7 @@ $(function()
 		// Show incorrect answer
 		else
 		{
+			$("#answer").val('');
 			$("#result").text("Correct Answer: " + unordered_cards[pile[location]]);
 			elem.setAttribute("style","visibility: visible; background-color: red;");
 		};
