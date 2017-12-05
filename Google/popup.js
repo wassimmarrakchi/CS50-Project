@@ -11,7 +11,7 @@ $(function()
       }
       else
       {
-        chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards':JSON.stringify({}), 'numberFlash':0, 'block': true});
+        chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'flashcards':JSON.stringify({}), 'numberFlash':0});
       }
   });
 
@@ -60,7 +60,8 @@ $(function()
         let number = oldNumber.number;
         let websites = JSON.parse(oldNumber.websites);
         let url = $('#url').val();
-        if(url)
+        // Make text has been entered and url is not already blocked
+        if(url && websites.indexOf(url) == -1)
         {
           number += 1;
           websites.push(url);
@@ -78,16 +79,20 @@ $(function()
     chrome.tabs.query({'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT}, function(tabs)
       {
         let current = tabs[0].url;
-        if(current != "chrome-extension://hafbfihabfkkfajojhmgklmcgdokjklj/flashcard.html")
+        if(current != "chrome-extension://hafbfihabfkkfajojhmgklmcgdokjklj/flashcard.html" )
         {
           chrome.storage.sync.get(['number', 'websites'], function(oldNumber)
           {
             let number = parseInt(oldNumber.number);
             let websites = JSON.parse(oldNumber.websites);
-            number++;
-            websites.push(current);
-            chrome.storage.sync.set({'number': number, 'websites' : JSON.stringify(websites)})
-            $('#number').text(number);
+            // Make sure the website is not already blocked
+            if(websites.indexOf(current) == -1)
+            {
+              number++;
+              websites.push(current);
+              chrome.storage.sync.set({'number': number, 'websites' : JSON.stringify(websites)})
+              $('#number').text(number);
+            }
             console.log("Number of websites: ", number, "Websites blocked: ", websites);
           });
         }
