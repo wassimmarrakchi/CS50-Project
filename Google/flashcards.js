@@ -64,7 +64,7 @@ $(function()
 			total_correct++;
 
 			$("#answer").val('');
-			
+
 			$("#total_correct").text(total_correct);
 		}
 
