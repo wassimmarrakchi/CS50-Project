@@ -64,8 +64,8 @@ $(function()
 			// Remeber total correct answers
 			total_correct++;
 
+			// Update page
 			$("#answer").val('');
-
 			$("#total_correct").text(total_correct);
 			$("#result").text("Correct!");
 			elem.setAttribute("style","visibility: visible; background-color: lime;");
@@ -74,6 +74,7 @@ $(function()
 		// Show incorrect answer
 		else
 		{
+			// Update page
 			$("#answer").val('');
 			$("#result").text("Correct Answer: " + unordered_cards[pile[location]]);
 			elem.setAttribute("style","visibility: visible; background-color: red;");
