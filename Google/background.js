@@ -3,6 +3,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab)
 {
     chrome.storage.sync.get(['number', 'websites', 'Unlocked'], function(oldNumber)
     {
+      // Checks the time elapsed
       let d = new Date();
       if(d.getTime() - oldNumber.Unlocked >= 10 * 1000)
       {
@@ -16,7 +17,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab)
           {
             chrome.storage.sync.set({'last_block': tab.url, 'last_website': websites[i]});
             chrome.tabs.update({url:chrome.extension.getURL('flashcard.html')});
-            console.log("Url blocked: ", tab.url);
+            console.log("Website blocked: ", tab.url);
           };
         };
       }

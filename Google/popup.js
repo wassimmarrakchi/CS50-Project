@@ -3,34 +3,37 @@ $(function()
   // Display the number of websites blocked and number of flashcards near the "Blocked Sites" button and the "Make flashcards" button respectively
   chrome.storage.sync.get(['number', 'numberFlash', 'websites', 'flashcards', 'last_block', 'Unlocked'], function(blocks)
   {
-      if(blocks.number)
-      {
-        $('#number').text(parseInt(blocks.number));
-        console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites);
-      }
-      else
-      {
-        chrome.storage.sync.set({'number': 0, 'websites':JSON.stringify([])});
-        console.log("Number of websites: ", 0, "Websites blocked: ", '{}');
-      }
+    // Checks preivously blocked websites and conversely initatilizes storage for blocked websites
+    if(blocks.number)
+    {
+      $('#number').text(parseInt(blocks.number));
+      console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites);
+    }
+    else
+    {
+      chrome.storage.sync.set({'number': 0, 'websites':JSON.stringify([])});
+      console.log("Number of websites: ", 0, "Websites blocked: ", '{}');
+    }
 
-      if(blocks.numberFlash)
-      {
-        $('#numberFlash').text(parseInt(blocks.numberFlash));
-        console.log("Number of flashcards: ", blocks.numberFlash, " Flashcards: ", blocks.flashcards);
-      }
-      else
-      {
-        chrome.storage.sync.set({'numberFlash': 0, 'flashcards':JSON.stringify({})});
-        console.log("Number of flashcards: ", 0, " Flashcards: ", '{}');
-      }
+    // Checks preivously added flashcards and conversely initatilizes storage for flashcards
+    if(blocks.numberFlash)
+    {
+      $('#numberFlash').text(parseInt(blocks.numberFlash));
+      console.log("Number of flashcards: ", blocks.numberFlash, " Flashcards: ", blocks.flashcards);
+    }
+    else
+    {
+      chrome.storage.sync.set({'numberFlash': 0, 'flashcards':JSON.stringify({})});
+      console.log("Number of flashcards: ", 0, " Flashcards: ", '{}');
+    }
 
-      console.log('Last block: ', blocks.last_block, 'Unlocked: ', blocks.Unlocked);
+    console.log('Last block: ', blocks.last_block, 'Unlocked: ', blocks.Unlocked);
   });
 
   // Load the existant flashcards in the dropdownmenu
   chrome.storage.sync.get(['numberFlash', 'flashcards'], function(blocks)
   {
+    // Creates an array of the front of the existant flashcards
     let pile = [];
     var x = document.getElementById("flashcards_options");
     let unordered_cards = JSON.parse(blocks.flashcards);
@@ -39,6 +42,8 @@ $(function()
     {
        pile.push(temp);
   	}
+
+    // Make all the cards into Option Elements in HTML
     for(let i = 0; i < blocks.numberFlash; i++)
     {
       var option = document.createElement("option");
@@ -46,6 +51,8 @@ $(function()
       option.text = pile[i];
       x.add(option);
     }
+
+    console.log("Your flashcards were successfully loaded.");
   });
 
   // Clear all blocked websites and all flashcards created
@@ -64,8 +71,7 @@ $(function()
         let number = oldNumber.number;
         let websites = JSON.parse(oldNumber.websites);
         let url = $('#url').val();
-        // Make text has been entered and url is not already blocked
-        if(url && websites.indexOf(url) == -1)
+        if(url && websites.indexOf(url) == -1) // Make text has been entered and url is not already blocked
         {
           number += 1;
           websites.push(url);
@@ -81,38 +87,39 @@ $(function()
   $('#current').click(function()
   {
     chrome.tabs.query({'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT}, function(tabs)
+    {
+      let current = tabs[0].url;
+      if(current != "chrome-extension://hafbfihabfkkfajojhmgklmcgdokjklj/flashcard.html" )
       {
-        let current = tabs[0].url;
-        if(current != "chrome-extension://hafbfihabfkkfajojhmgklmcgdokjklj/flashcard.html" )
+        chrome.storage.sync.get(['number', 'websites'], function(oldNumber)
         {
-          chrome.storage.sync.get(['number', 'websites'], function(oldNumber)
+          let number = parseInt(oldNumber.number);
+          let websites = JSON.parse(oldNumber.websites);
+          if(websites.indexOf(current) == -1) // Make sure the website is not already blocked
           {
-            let number = parseInt(oldNumber.number);
-            let websites = JSON.parse(oldNumber.websites);
-            // Make sure the website is not already blocked
-            if(websites.indexOf(current) == -1)
-            {
-              number++;
-              websites.push(current);
-              chrome.storage.sync.set({'number': number, 'websites' : JSON.stringify(websites)})
-              $('#number').text(number);
-            }
-            console.log("Number of websites: ", number, "Websites blocked: ", websites);
-          });
-        }
-      });
+            number++;
+            websites.push(current);
+            chrome.storage.sync.set({'number': number, 'websites' : JSON.stringify(websites)})
+            $('#number').text(number);
+          }
+          console.log("Number of websites: ", number, "Websites blocked: ", websites);
+        });
+      }
+    });
   });
 
   // Add new flashcard
   $('#AddFlash').click(function()
   {
-    chrome.storage.sync.get(['numberFlash', 'flashcards'], function(oldFlashcards){
+    chrome.storage.sync.get(['numberFlash', 'flashcards'], function(oldFlashcards)
+    {
       let flashcards = JSON.parse(oldFlashcards.flashcards);
       let front = $('#frontAdd').val();
       let back = $('#backAdd').val();
       let flashNumber = parseInt(oldFlashcards.numberFlash);
       if(front && back)
       {
+        // Add the new flashcard as an Option Element in HTML if the front hasn't been created before
         if(!flashcards[front])
         {
           flashNumber++;
@@ -129,7 +136,7 @@ $(function()
         $('#backAdd').val('');
 
         console.log("Flashcard added,: ", front, " : ", back);
-        console.log("Existant flashcards: ", flashcards);
+        console.log("Number of flashcards: ", flashNumber, "Flashcards: ", flashcards);
       };
     });
   });
@@ -150,7 +157,7 @@ $(function()
         $('#numberFlash').text(numberFlash);
         chrome.storage.sync.set({'flashcards' : JSON.stringify(flashcard), 'numberFlash' : numberFlash});
         console.log("Flahscard deleted: ", card);
-        console.log("Existant flashcards: ", flashcard);
+        console.log("Number of flashcards: ", flashNumber, "Flashcards: ", flashcards);
       });
     };
   });
