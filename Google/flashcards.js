@@ -83,9 +83,12 @@ $(function()
 		// Check if sufficient correct answer
 		if (total_correct == questions)
 		{
-			chrome.storage.sync.get('last_block', function(newUrl)
+			chrome.storage.sync.get(['last_block', 'websites', 'last_website', 'number'], function(newUrl)
 			{
-				chrome.tabs.update({url:chrome.extension.getURL(newUrl.last_block)});
+				let websites = JSON.parse(newUrl.websites);
+				websites.splice(websites.indexOf(newUrl.last_website));
+				chrome.storage.sync.set({'websites' : websites, 'number': newUrl.number - 1});
+				chrome.tabs.update({url: newUrl.last_block});
 			});
 		}
 		else
