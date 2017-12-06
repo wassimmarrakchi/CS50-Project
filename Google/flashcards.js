@@ -8,8 +8,10 @@ $(function()
 	let total_correct = 0; // How many correct answers user has input
 	let location = 0; // Location of random question in array
 
-	chrome.storage.sync.get(['numberFlash', 'front', 'back', 'nbr'], function(flashcards)
+	chrome.storage.sync.get(['numberFlash', 'front', 'back', 'nbr', 'correct'], function(flashcards)
 	{
+		total_correct = flashcards.correct;
+		$("#total_correct").text(total_correct);
 		questions = flashcards.nbr;
 		front = JSON.parse(flashcards.front);
 		back = JSON.parse(flashcards.back);
@@ -36,6 +38,14 @@ $(function()
 		{
 			check();
 		});
+
+		$('#answer').keyup(function(event)
+		{
+			if(event.keyCode == 13)
+			{
+				check();
+			}
+		})
 	});
 
 	// Displays random question
@@ -62,6 +72,8 @@ $(function()
 			// Remeber total correct answers
 			total_correct++;
 
+			chrome.storage.sync.set({'correct':total_correct});
+
 			// Update page
 			$("#answer").val('');
 			$("#total_correct").text(total_correct);
@@ -78,9 +90,11 @@ $(function()
 			elem.setAttribute("style","visibility: visible; background-color: red;");
 		};
 
+		$("#answer").focus();
 		// Check if sufficient correct answer
 		if (total_correct == questions)
 		{
+			chrome.storage.sync.set({'correct':0})
 			chrome.storage.sync.get(['last_block', 'websites'], function(newUrl)
 			{
 				let d = new Date();

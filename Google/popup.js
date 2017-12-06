@@ -7,7 +7,7 @@ $(function()
     if(isNaN(blocks.numberFlash) || isNaN(blocks.number) || isNaN(blocks.nbr) || isNaN(blocks.time))
     {
       chrome.storage.sync.clear();
-      chrome.storage.sync.set({'number': 0, 'numberFlash': 0, 'websites':JSON.stringify([]), 'front': JSON.stringify([]), 'back': JSON.stringify([]), 'last_block': "", 'Unlocked': 0, 'time' : 0.25, 'nbr': 10});
+      chrome.storage.sync.set({'number': 0, 'numberFlash': 0, 'websites':JSON.stringify([]), 'front': JSON.stringify([]), 'back': JSON.stringify([]), 'last_block': "", 'Unlocked': 0, 'time' : 0.25, 'nbr': 10, 'correct': 0});
       $('#numberFlash').text(0);
       $('#number').text(0);
     }
@@ -239,6 +239,7 @@ $(function()
       chrome.storage.sync.set({'nbr': parseInt(nbr)});
       $('#nbr').val('');
       console.log("Number of flashcards to do: ", nbr);
+      chrome.storage.sync.set({'correct': 0}); // No cheating
     }
 
     if(Number.isFinite(parseFloat(time)) && parseFloat(time) > 0)
@@ -276,7 +277,7 @@ $(function()
   $('#Rein').click(function()
   {
       chrome.storage.sync.clear();
-      chrome.storage.sync.set({'number': 0, 'numberFlash': 0, 'websites':JSON.stringify([]), 'front': JSON.stringify([]), 'back': JSON.stringify([]), 'last_block': "", 'Unlocked': 0, 'time' : 0.25, 'nbr': 10});
+      chrome.storage.sync.set({'number': 0, 'numberFlash': 0, 'websites':JSON.stringify([]), 'front': JSON.stringify([]), 'back': JSON.stringify([]), 'last_block': "", 'Unlocked': 0, 'time' : 0.25, 'nbr': 10, 'correct':0});
       $('#numberFlash').text(0);
       $('#number').text(0);
       console.log("Procrastanki was successfully reinitialized.");
