@@ -24,13 +24,20 @@
     </div>
     <div class="wrapper" id="div1">
       <select id="flashcards_options">
-        <option id="0" selected="selected">Select the flashcard you want to delete</option>
+        <option id="default" selected="selected">Select the flashcard you want to delete</option>
       </select>
       <input class="button" type="button" value="Delete Flashcard" id="DelFlash">
+      <input class="button" type="button" value="Delete All Flashcards" id="DelAll">
+    </div>
+    <div class="wrapper">
+      Set block time in mins: <input class="text" placeholder="mins" type="text" id="time">
+      Set # flashcards to unlock: <input class="text" placeholder="#" type="text" id="nbr">
+      <input type="button" class="button" value="Set" id="Set">
     </div>
     <div class="wrapper">
       Total Flashcards: <span id="numberFlash" style="margin-right: 5px;"> 0 </span>
-      Total Blocked Site: <span id="number"> 0 </span>
+      <input class="button" type="button" value="Reinitialize" id="Rein">
+      Total Blocked Sites: <span id="number"> 0 </span>
     </div>
   </body>
 </html>

@@ -1,11 +1,11 @@
 // Redirects blocked websites
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab)
 {
-    chrome.storage.sync.get(['number', 'websites', 'Unlocked'], function(oldNumber)
+    chrome.storage.sync.get(['number', 'websites', 'Unlocked', 'time'], function(oldNumber)
     {
       // Checks the time elapsed
       let d = new Date();
-      if(d.getTime() - oldNumber.Unlocked >= 10 * 1000)
+      if(d.getTime() - oldNumber.Unlocked >= oldNumber.time * 60 * 1000)
       {
         let url = "";
         let number = parseInt(oldNumber.number);
