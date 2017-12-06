@@ -167,6 +167,7 @@ $(function()
     if (event.keyCode == 13)
     {
       AddFlash();
+      $("#frontAdd").focus();
     }
   });
 
