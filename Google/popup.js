@@ -20,10 +20,9 @@ $(function()
   });
 
 
-  // Load the existant flashcards in the dropdownmenu
-  chrome.storage.sync.get(['numberFlash', 'front'], function(blocks)
+  // Load the existant flashcards and websites in the dropdownmenus
+  chrome.storage.sync.get(['numberFlash', 'front', 'websites', 'number'], function(blocks)
   {
-    // Creates an array of the front of the existant flashcards
     var x = document.getElementById("flashcards_options");
     let front = JSON.parse(blocks.front);
 
@@ -35,8 +34,21 @@ $(function()
       option.text = front[i];
       x.add(option);
     }
-
     console.log("Your flashcards were successfully loaded.");
+
+    var x = document.getElementById("websites_options");
+    let websites = JSON.parse(blocks.websites);
+
+    // Make all the websites into Option Elements in HTML
+    for(let j = 0; j < blocks.number; j++)
+    {
+      var option = document.createElement("option");
+      option.id = j;
+      option.text = websites[j];
+      x.add(option);
+    }
+    console.log("Your websites were successfully loaded.");
+
   });
 
 
@@ -48,14 +60,20 @@ $(function()
       let number = oldNumber.number;
       let websites = JSON.parse(oldNumber.websites);
       let url = $('#url').val();
-      if(url && websites.indexOf(url) == -1) // Make text has been entered and url is not already blocked
+      if(url && websites.indexOf(url) == -1) // Make sure text has been entered and url is not already blocked
       {
-        number += 1;
         websites.push(url);
-        chrome.storage.sync.set({'number': number, 'websites' : JSON.stringify(websites)});
         $('#number').text(number);
+        var x = document.getElementById("websites_options");
+        var option = document.createElement("option");
+        option.id = number;
+        number += 1;
+        option.text = url;
+        x.add(option);
+        chrome.storage.sync.set({'number': number, 'websites' : JSON.stringify(websites)});
         console.log("Number of websites: ", number, "Websites blocked: ", websites);
       };
+      $('#number').text(number);
       $('#url').val('');
     });
   }
@@ -89,10 +107,15 @@ $(function()
           let websites = JSON.parse(oldNumber.websites);
           if(websites.indexOf(current) == -1) // Make sure the website is not already blocked
           {
-            number++;
             websites.push(current);
-            chrome.storage.sync.set({'number': number, 'websites' : JSON.stringify(websites)})
+            var x = document.getElementById("websites_options");
+            var option = document.createElement("option");
+            option.id = number;
+            number++;
             $('#number').text(number);
+            option.text = current;
+            x.add(option);
+            chrome.storage.sync.set({'number': number, 'websites' : JSON.stringify(websites)})
           }
           console.log("Number of websites: ", number, "Websites blocked: ", websites);
         });
@@ -100,7 +123,46 @@ $(function()
     });
   });
 
-  // Clear all blocked websites
+
+  // Unblock one website
+  function DelWeb()
+  {
+    let url = $('#websites_options').val();
+    if(url != "Select the website you want to unblock")
+    {
+      chrome.storage.sync.get(['number', 'websites'], function(blocks)
+      {
+        let websites = JSON.parse(blocks.websites);
+        let id = websites.indexOf(url);
+        $("#websites_options option[id=" + id + "]").remove();
+        let number = blocks.number;
+        websites.splice(id, 1);
+        number--;
+        $('#number').text(number);
+        chrome.storage.sync.set({'websites' : JSON.stringify(websites), 'number' : number});
+        console.log("Website deleted: ", url);
+        console.log("Number of websites: ", number, "Websites: ", websites);
+      });
+    };
+  };
+
+  // Click button to delete one website from dropdownmenu
+  $('#DelWeb').click(function()
+  {
+    DelWeb();
+  });
+
+  // Click enter to delete one website from dropdownmenu
+  $('#websites_options').keyup(function(event)
+  {
+    if(event.keyCode == 13)
+    {
+      DelWeb();
+    }
+  })
+
+
+  // Unblock all websites
   $('#sites').click(function()
   {
     $('#number').text("0");
