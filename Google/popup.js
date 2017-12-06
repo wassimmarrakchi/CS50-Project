@@ -15,7 +15,7 @@ $(function()
     {
       $('#numberFlash').text(blocks.numberFlash);
       $('#number').text(blocks.number);
-      console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites, "Number of flashcards: ", blocks.numberFlash, " Front: ", blocks.front, "Back: ", block.back, "Last block: ", block.last_block, "Last time Unlock: ", blocks.Unlocked, "Procrasitation time: ", blocks.time, "Flashcards to unlock: ", blocks.nbr);
+      console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites, "Number of flashcards: ", blocks.numberFlash, " Front: ", blocks.front, "Back: ", blocks.back, "Last block: ", blocks.last_block, "Last time Unlock: ", blocks.Unlocked, "Procrasitation time: ", blocks.time, "Flashcards to unlock: ", blocks.nbr);
     }
   });
 
@@ -185,7 +185,7 @@ $(function()
   {
     let nbr = $('#nbr').val();
     let time = $('#time').val();
-    if(Number.isInteger(parseInt(nbr)) && nbr == parseInt(nbr) && parseInt(nbr) > 0)
+    if(nbr == parseInt(nbr) && parseInt(nbr) > 0)
     {
       chrome.storage.sync.set({'nbr': parseInt(nbr)});
       $('#nbr').val('');
