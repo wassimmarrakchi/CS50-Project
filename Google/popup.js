@@ -19,6 +19,7 @@ $(function()
     }
   });
 
+
   // Load the existant flashcards in the dropdownmenu
   chrome.storage.sync.get(['numberFlash', 'front'], function(blocks)
   {
@@ -38,32 +39,40 @@ $(function()
     console.log("Your flashcards were successfully loaded.");
   });
 
-  // Clear all blocked websites
-  $('#sites').click(function()
-  {
-    $('#number').text("0");
-    chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'last_block': "", 'Unlocked' : 0});
-    console.log("All websites and block information have been cleared.");
-  });
 
-  // Add url to blocked websites
+  // Add typed url to blocked websites
+  function AddWebsite()
+  {
+    chrome.storage.sync.get(['number', 'websites'], function(oldNumber)
+    {
+      let number = oldNumber.number;
+      let websites = JSON.parse(oldNumber.websites);
+      let url = $('#url').val();
+      if(url && websites.indexOf(url) == -1) // Make text has been entered and url is not already blocked
+      {
+        number += 1;
+        websites.push(url);
+        chrome.storage.sync.set({'number': number, 'websites' : JSON.stringify(websites)});
+        $('#number').text(number);
+        console.log("Number of websites: ", number, "Websites blocked: ", websites);
+      };
+      $('#url').val('');
+    });
+  }
+
+  // Click button to add blocked website
   $('#Block').click(function()
   {
-      chrome.storage.sync.get(['number', 'websites'], function(oldNumber)
-      {
-        let number = oldNumber.number;
-        let websites = JSON.parse(oldNumber.websites);
-        let url = $('#url').val();
-        if(url && websites.indexOf(url) == -1) // Make text has been entered and url is not already blocked
-        {
-          number += 1;
-          websites.push(url);
-          chrome.storage.sync.set({'number': number, 'websites' : JSON.stringify(websites)});
-          $('#number').text(number);
-          console.log("Number of websites: ", number, "Websites blocked: ", websites);
-        };
-        $('#url').val('');
-      });
+      AddWebsite();
+  });
+
+  // Click enter to add blocked website
+  $("#url").keyup(function(event)
+  {
+    if(event.keyCode == 13)
+    {
+      AddWebsite();
+    }
   });
 
   // Add current site to the blocked websites
@@ -91,8 +100,17 @@ $(function()
     });
   });
 
-  // Add new flashcard
-  $('#AddFlash').click(function()
+  // Clear all blocked websites
+  $('#sites').click(function()
+  {
+    $('#number').text("0");
+    chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'last_block': "", 'Unlocked' : 0});
+    console.log("All websites and block information have been cleared.");
+  });
+
+
+  // Add flashcard
+  function AddFlash()
   {
     chrome.storage.sync.get(['numberFlash', 'front', 'back'], function(oldFlashcards)
     {
@@ -128,10 +146,32 @@ $(function()
         console.log("Number of flashcards: ", flashNumber, "Front: ", front, "Back: ", back);
       };
     });
+  }
+
+  // Click button to add new flashcard
+  $('#AddFlash').click(function()
+  {
+    AddFlash();
+  });
+
+  // Click enter to add flashcard
+  $("#frontAdd").keyup(function(event)
+  {
+    if (event.keyCode == 13)
+    {
+      AddFlash();
+    }
+  });
+  $("#backAdd").keyup(function(event)
+  {
+    if (event.keyCode == 13)
+    {
+      AddFlash();
+    }
   });
 
   // Delete one flashcard
-  $('#DelFlash').click(function()
+  function DelFlash()
   {
     let card = $('#flashcards_options').val();
     if(card != "Select the flashcard you want to delete")
@@ -152,7 +192,23 @@ $(function()
         console.log("Number of flashcards: ", flashNumber, "Front: ", front, "Back: ", back);
       });
     };
+  }
+
+  // Click button to delete one flashcard
+  $('#DelFlash').click(function()
+  {
+    DelFlash();
   });
+
+  // Click enter to delete one flashcard from dropdownmenu
+  $('#flashcards_options').keyup(function(event)
+  {
+    if(event.keyCode == 13)
+    {
+      DelFlash();
+    }
+  })
+
 
   // Delete all flashcards
   $('#DelAll').click(function()
@@ -166,22 +222,14 @@ $(function()
         $("#flashcards_options option[id=" + i + "]").remove();
       }
       chrome.storage.sync.set({'numberFlash' : 0, 'front':JSON.stringify([]), 'back' :JSON.stringify([])});
+      $('#numberFlash').text(0);
       console.log("All flashcards have been deleted.");
     });
   });
 
-  // Reinitialize
-  $('#Rein').click(function()
-  {
-      chrome.storage.sync.clear();
-      chrome.storage.sync.set({'number': 0, 'numberFlash': 0, 'websites':JSON.stringify([]), 'front': JSON.stringify([]), 'back': JSON.stringify([]), 'last_block': "", 'Unlocked': 0, 'time' : 0.25, 'nbr': 10});
-      $('#numberFlash').text(0);
-      $('#number').text(0);
-      console.log("Procrastanki was successfully reinitialized.");
-  });
 
   // Set block time or # flashcards
-  $('#set').click(function()
+  function SetTF()
   {
     let nbr = $('#nbr').val();
     let time = $('#time').val();
@@ -198,5 +246,38 @@ $(function()
       $('#time').val('');
       console.log("Procrastination time: ", time);
     }
+  }
+
+  // Click enter to set new block time or # flashcards
+  $('#nbr').keyup(function(event)
+  {
+    if(event.keyCode == 13)
+    {
+      SetTF();
+    }
+  })
+  $('#time').keyup(function(event)
+  {
+    if(event.keyCode == 13)
+    {
+      SetTF();
+    }
+  })
+
+  // Click button to set block time or # flashcards
+  $('#set').click(function()
+  {
+    SetTF()
+  });
+
+
+  // Reinitialize
+  $('#Rein').click(function()
+  {
+      chrome.storage.sync.clear();
+      chrome.storage.sync.set({'number': 0, 'numberFlash': 0, 'websites':JSON.stringify([]), 'front': JSON.stringify([]), 'back': JSON.stringify([]), 'last_block': "", 'Unlocked': 0, 'time' : 0.25, 'nbr': 10});
+      $('#numberFlash').text(0);
+      $('#number').text(0);
+      console.log("Procrastanki was successfully reinitialized.");
   });
 });
