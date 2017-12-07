@@ -19,38 +19,57 @@ $(function()
     }
   });
 
-
-  // Load the existant flashcards and websites in the dropdownmenus
-  chrome.storage.sync.get(['numberFlash', 'front', 'websites', 'number'], function(blocks)
+  // Load existant flashcards in the dropdownmenu
+  function LoadFlash()
   {
-    var x = document.getElementById("flashcards_options");
-    let front = JSON.parse(blocks.front);
-
-    // Make all the cards into Option Elements in HTML
-    for(let i = 0; i < blocks.numberFlash; i++)
+    chrome.storage.sync.get(['numberFlash', 'front', 'websites', 'number'], function(blocks)
     {
-      var option = document.createElement("option");
-      option.id = i;
-      option.text = front[i];
-      x.add(option);
-    }
-    console.log("Your flashcards were successfully loaded.");
+      var x = document.getElementById("flashcards_options");
+      let front = JSON.parse(blocks.front);
 
-    var x = document.getElementById("websites_options");
-    let websites = JSON.parse(blocks.websites);
+      // Make all the cards into Option Elements in HTML
+      for(let i = 0; i < blocks.numberFlash; i++)
+      {
+        var option = document.createElement("option");
+        option.id = i;
+        option.text = front[i];
+        x.add(option);
+      }
+      console.log("Your flashcards were successfully loaded.");
+    });
+  }
+  LoadFlash();
 
-    // Make all the websites into Option Elements in HTML
-    for(let j = 0; j < blocks.number; j++)
+
+  // Load existant websites in the dropdownmenu
+  function LoadWeb()
+  {
+    chrome.storage.sync.get(['numberFlash', 'front', 'websites', 'number'], function(blocks)
     {
-      var option = document.createElement("option");
-      option.id = j;
-      option.text = websites[j];
-      x.add(option);
+      var x = document.getElementById("websites_options");
+      let websites = JSON.parse(blocks.websites);
+
+      // Make all the websites into Option Elements in HTML
+      for(let j = 0; j < blocks.number; j++)
+      {
+        var option = document.createElement("option");
+        option.id = j;
+        option.text = websites[j];
+        x.add(option);
+      }
+      console.log("Your websites were successfully loaded.");
+
+    });
+  }
+  LoadWeb();
+
+  function EmptyDropdown(string, number)
+  {
+    for(let i = 0; i < number; i++)
+    {
+      $("#" + string + "_options option[id=" + i + "]").remove();
     }
-    console.log("Your websites were successfully loaded.");
-
-  });
-
+  };
 
   // Add typed url to blocked websites
   function AddWebsite()
@@ -83,7 +102,6 @@ $(function()
   {
       AddWebsite();
   });
-
   // Click enter to add blocked website
   $("#url").keyup(function(event)
   {
@@ -92,8 +110,7 @@ $(function()
       AddWebsite();
     }
   });
-
-  // Add current site to the blocked websites
+  // Add current site to the blocked websites by clicking on button
   $('#current').click(function()
   {
     chrome.tabs.query({'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT}, function(tabs)
@@ -134,24 +151,35 @@ $(function()
       {
         let websites = JSON.parse(blocks.websites);
         let id = websites.indexOf(url);
-        $("#websites_options option[id=" + id + "]").remove();
         let number = blocks.number;
+        EmptyDropdown("websites", number);
         websites.splice(id, 1);
         number--;
         $('#number').text(number);
         chrome.storage.sync.set({'websites' : JSON.stringify(websites), 'number' : number});
+        LoadWeb();
         console.log("Website deleted: ", url);
         console.log("Number of websites: ", number, "Websites: ", websites);
       });
     };
   };
+  // Unblock all websites
+  function DelAllWeb()
+  {
+    chrome.storage.sync.get(['number'], function(blocks)
+    {
+      EmptyDropdown("websites", blocks.number);
+    });
+    $('#number').text("0");
+    chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'last_block': "", 'Unlocked' : 0});
+    console.log("All websites and block information have been cleared.");
+  }
 
   // Click button to delete one website from dropdownmenu
   $('#DelWeb').click(function()
   {
     DelWeb();
   });
-
   // Click enter to delete one website from dropdownmenu
   $('#websites_options').keyup(function(event)
   {
@@ -160,14 +188,10 @@ $(function()
       DelWeb();
     }
   })
-
-
-  // Unblock all websites
+  // Click button to unblock all websites
   $('#sites').click(function()
   {
-    $('#number').text("0");
-    chrome.storage.sync.set({'number': 0, 'websites': JSON.stringify([]), 'last_block': "", 'Unlocked' : 0});
-    console.log("All websites and block information have been cleared.");
+    DelAllWeb();
   });
 
 
@@ -215,7 +239,6 @@ $(function()
   {
     AddFlash();
   });
-
   // Click enter to add flashcard
   $("#frontAdd").keyup(function(event)
   {
@@ -233,6 +256,7 @@ $(function()
     }
   });
 
+
   // Delete one flashcard
   function DelFlash()
   {
@@ -244,17 +268,29 @@ $(function()
         let front = JSON.parse(blocks.front);
         let back = JSON.parse(blocks.back);
         let id = front.indexOf(card);
-        $("#flashcards_options option[id=" + id + "]").remove();
         let numberFlash = blocks.numberFlash;
+        EmptyDropdown("flashcards", numberFlash);
         front.splice(id, 1);
         back.splice(id, 1);
         numberFlash--;
         $('#numberFlash').text(numberFlash);
-        chrome.storage.sync.set({'flashcards' : JSON.stringify(flashcard), 'numberFlash' : numberFlash});
+        chrome.storage.sync.set({'front' : JSON.stringify(front), 'back' : JSON.stringify(back), 'numberFlash' : numberFlash});
+        LoadFlash();
         console.log("Flahscard deleted: ", card);
         console.log("Number of flashcards: ", flashNumber, "Front: ", front, "Back: ", back);
       });
     };
+  }
+  // Delete all flashcards
+  function DelAllFlash()
+  {
+    chrome.storage.sync.get(['numberFlash'], function(blocks)
+    {
+      EmptyDropdown("flashcards", blocks.numberFlash);
+    });
+    chrome.storage.sync.set({'numberFlash' : 0, 'front':JSON.stringify([]), 'back' :JSON.stringify([])});
+    $('#numberFlash').text(0);
+    console.log("All flashcards have been deleted.");
   }
 
   // Click button to delete one flashcard
@@ -262,7 +298,6 @@ $(function()
   {
     DelFlash();
   });
-
   // Click enter to delete one flashcard from dropdownmenu
   $('#flashcards_options').keyup(function(event)
   {
@@ -271,23 +306,10 @@ $(function()
       DelFlash();
     }
   })
-
-
-  // Delete all flashcards
+  // Click button to delete all flashcards
   $('#DelAll').click(function()
   {
-    chrome.storage.sync.get(['front', 'numberFlash'], function(blocks)
-    {
-      let front= JSON.parse(blocks.front);
-      let numberFlash = blocks.numberFlash;
-      for(let i = 0; i < front.length; i++)
-      {
-        $("#flashcards_options option[id=" + i + "]").remove();
-      }
-      chrome.storage.sync.set({'numberFlash' : 0, 'front':JSON.stringify([]), 'back' :JSON.stringify([])});
-      $('#numberFlash').text(0);
-      console.log("All flashcards have been deleted.");
-    });
+      DelAllFlash();
   });
 
 
@@ -327,7 +349,6 @@ $(function()
       SetTF();
     }
   })
-
   // Click button to set block time or # flashcards
   $('#set').click(function()
   {
@@ -338,11 +359,16 @@ $(function()
   // Reinitialize
   $('#Rein').click(function()
   {
-      chrome.storage.sync.clear();
-      chrome.storage.sync.set({'number': 0, 'numberFlash': 0, 'websites':JSON.stringify([]), 'front': JSON.stringify([]),
-                            'back': JSON.stringify([]), 'last_block': "", 'Unlocked': 0, 'time' : 0.25, 'nbr': 10, 'correct':0});
-      $('#numberFlash').text(0);
-      $('#number').text(0);
-      console.log("Procrastanki was successfully reinitialized.");
+    chrome.storage.sync.clear();
+    chrome.storage.sync.get(['number', 'numberFlash'], function(blocks)
+    {
+      EmptyDropdown("websites", blocks.number);
+      EmptyDropdown("flashcards", blocks.numberFlash);
+    })
+    chrome.storage.sync.set({'number': 0, 'numberFlash': 0, 'websites':JSON.stringify([]), 'front': JSON.stringify([]),
+                          'back': JSON.stringify([]), 'last_block': "", 'Unlocked': 0, 'time' : 0.25, 'nbr': 10, 'correct':0});
+    $('#numberFlash').text(0);
+    $('#number').text(0);
+    console.log("Procrastanki was successfully reinitialized.");
   });
 });
