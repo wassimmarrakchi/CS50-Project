@@ -63,6 +63,7 @@ $(function()
   }
   LoadWeb();
 
+  // Empty one of the two dropdownmenus
   function EmptyDropdown(string, number)
   {
     for(let i = 0; i < number; i++)
