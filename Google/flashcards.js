@@ -1,6 +1,5 @@
 $(function()
 {
-	// Generate unordered array of flashcards
 	let numberFlash = 0;
 	let front =[];
 	let back = [];
