@@ -360,12 +360,12 @@ $(function()
   // Reinitialize
   $('#Rein').click(function()
   {
-    chrome.storage.sync.clear();
     chrome.storage.sync.get(['number', 'numberFlash'], function(blocks)
     {
       EmptyDropdown("websites", blocks.number);
       EmptyDropdown("flashcards", blocks.numberFlash);
     })
+    chrome.storage.sync.clear();
     chrome.storage.sync.set({'number': 0, 'numberFlash': 0, 'websites':JSON.stringify([]), 'front': JSON.stringify([]),
                           'back': JSON.stringify([]), 'last_block': "", 'Unlocked': 0, 'time' : 0.25, 'nbr': 10, 'correct':0});
     $('#numberFlash').text(0);
