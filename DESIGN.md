@@ -18,3 +18,5 @@ Back-End Functions (flashcards.html and flashcards.js): The user completes his/h
 Back-End (background.js): Chrome extensions, as declared in any extension's manifest.json, allow creators to implement a background file (in our case 'background.js). This file runs continuously. We designed this file to add google chrome listener for changes in a pages URL. Each change, as long as the user has not recently unblocked websites by doing flashcards, checks the updated URL against our stored list of blocked sites. If there is a match (determined by regular expressions to allow for greater functionality), then the user is redirected and 'background.js' calls for 'flashcards.html'.
 
 'error.html' Functionality: `error.html` prompts the user to create some flashcards and includes a button that redirects users to 'popup.html'.
+
+YouTube Link: https://youtu.be/mrxFdTthqJc
