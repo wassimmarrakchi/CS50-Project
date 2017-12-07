@@ -1,33 +1,32 @@
 $(function()
 {
 	// Generate unordered array of flashcards
-	let pile = []; // Array of card object keys for random functionality
-	let questions = 10; // Default number of sufficient questions
+	let numberFlash = 0;
+	let front =[];
+	let back = [];
+	let questions = 0; // Default number of sufficient questions
 	let total_correct = 0; // How many correct answers user has input
 	let location = 0; // Location of random question in array
-	let unordered_cards = {} // Card object
 
-	chrome.storage.sync.get(['numberFlash', 'flashcards'], function(current_flashcards)
+	chrome.storage.sync.get(['numberFlash', 'front', 'back', 'nbr', 'correct'], function(flashcards)
 	{
-		unordered_cards = JSON.parse(current_flashcards.flashcards);
+		total_correct = flashcards.correct;
+		$("#total_correct").text(total_correct);
+		questions = flashcards.nbr;
+		front = JSON.parse(flashcards.front);
+		back = JSON.parse(flashcards.back);
+		numberFlash = flashcards.numberFlash;
 
 		// Make sure there are flashcards
-		if (Object.keys(unordered_cards).length == 0)
+		if (!flashcards.numberFlash)
 		{
 			chrome.tabs.update({url:chrome.extension.getURL('error.html')});
 		};
 
-		// Create array of keys from dictionary
-		let temp;
-		for(temp in unordered_cards)
-		{
-	     pile.push(temp);
-		};
-
 		// Define total correct answers to pass (default 10 unless fewer exist)
-		if (pile.length < questions)
+		if (numberFlash < questions)
 		{
-			questions = pile.length;
+			questions = numberFlash;
 		};
 
 		$("#questions").text(questions);
@@ -39,16 +38,24 @@ $(function()
 		{
 			check();
 		});
+
+		$('#answer').keyup(function(event)
+		{
+			if(event.keyCode == 13)
+			{
+				check();
+			}
+		})
 	});
 
 	// Displays random question
 	function ask()
 	{
 		// Location used in both ask and check
-		location = Math.floor(Math.random() * pile.length);
+		location = Math.floor(Math.random() * numberFlash);
 
 		// Render random question
-		$("#question").text(pile[location]);
+		$("#question").text(front[location]);
 	};
 
 	// Checks user input
@@ -57,12 +64,15 @@ $(function()
 		let elem = document.getElementById("result_box");
 
 		// Check if user input matches correct answer
-		if ($('#answer').val() == unordered_cards[pile[location]])
+		if ($('#answer').val() == back[location])
 		{
-			pile.splice(location, 1);
+			front.splice(location, 1);
+			back.splice(location, 1);
+			numberFlash--;
 
 			// Remeber total correct answers
 			total_correct++;
+			chrome.storage.sync.set({'correct':total_correct});
 
 			// Update page
 			$("#answer").val('');
@@ -76,18 +86,18 @@ $(function()
 		{
 			// Update page
 			$("#answer").val('');
-			$("#result").text("Correct Answer: " + unordered_cards[pile[location]]);
+			$("#result").text("Correct Answer: " + back[location]);
 			elem.setAttribute("style","visibility: visible; background-color: red;");
 		};
 
+		$("#answer").focus();
 		// Check if sufficient correct answer
 		if (total_correct == questions)
 		{
-			chrome.storage.sync.get(['last_block', 'websites', 'last_website', 'number'], function(newUrl)
+			chrome.storage.sync.get(['last_block', 'websites'], function(newUrl)
 			{
-				let websites = JSON.parse(newUrl.websites);
-				websites.splice(websites.indexOf(newUrl.last_website));
-				chrome.storage.sync.set({'websites' : websites, 'number': newUrl.number - 1});
+				let d = new Date();
+				chrome.storage.sync.set({'Unlocked' : d.getTime(), 'correct':0});
 				chrome.tabs.update({url: newUrl.last_block});
 			});
 		}

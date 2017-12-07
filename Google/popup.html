@@ -14,23 +14,36 @@
       <input class="button" type="submit" id="Block" value="Block">
     </div>
     <div class="wrapper">
-      <input type="button" class="button" value="Block Current Page" id="current">
-      <input type="button" class="button" value="Clear Blocked Sites" id="sites">
+      <input type="button" class="button" value="Block Current Page" id="current" style="width:500px">
     </div>
     <div class="wrapper">
       <input class="text flash_input" placeholder="Front flashcard" type="text" id="frontAdd">
       <input class="text flash_input" placeholder="Back flashcard" type="text" id="backAdd">
       <input type="button" class="button" value="Make Flashcard" id="AddFlash">
     </div>
+    <div class="wrapper" id="div2">
+      <select id="websites_options">
+        <option id="default" selected="selected">Select the website you want to unblock</option>
+      </select>
+      <input class="button" type="button" value="Unblock website" id="DelWeb">
+      <input type="button" class="button" value="Unblock all websites" id="sites">
+    </div>
     <div class="wrapper" id="div1">
       <select id="flashcards_options">
-        <option id="0" selected="selected">Select the flashcard you want to delete</option>
+        <option id="default" selected="selected">Select the flashcard you want to delete</option>
       </select>
       <input class="button" type="button" value="Delete Flashcard" id="DelFlash">
+      <input class="button" type="button" value="Delete All Flashcards" id="DelAll">
+    </div>
+    <div class="wrapper">
+      Set block time in mins: <input class="text" placeholder="mins" type="number" id="time">
+      Set # flashcards to unlock: <input class="text" placeholder="#" type="number" id="nbr">
+      <input type="button" class="button" value="Set" id="set">
     </div>
     <div class="wrapper">
       Total Flashcards: <span id="numberFlash" style="margin-right: 5px;"> 0 </span>
-      Total Blocked Site: <span id="number"> 0 </span>
+      <input class="button" type="button" value="Reinitialize" id="Rein">
+      Total Blocked Sites: <span id="number"> 0 </span>
     </div>
   </body>
 </html>
