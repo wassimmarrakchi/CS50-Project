@@ -8,7 +8,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab)
       if(d.getTime() - blocks.Unlocked >= blocks.time * 60 * 1000)
       {
         let url = "";
-        let number = parseInt(blocks.number);
+        let number = blocks.number;
         let websites = JSON.parse(blocks.websites);
         for(let i = 0; i < number; i++)
         {
