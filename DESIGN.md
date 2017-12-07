@@ -1,4 +1,5 @@
 # CS50-Project
+YouTube Link: https://youtu.be/mrxFdTthqJc
 
 Basic Functionality:
 Data Storage: We decided to use Chrome Storage API to store all the data related to our app. The data is synced to the user's google account so that all his data is accessible across platforms.
