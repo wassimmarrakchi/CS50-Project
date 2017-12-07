@@ -339,7 +339,8 @@ $(function()
   $('#Rein').click(function()
   {
       chrome.storage.sync.clear();
-      chrome.storage.sync.set({'number': 0, 'numberFlash': 0, 'websites':JSON.stringify([]), 'front': JSON.stringify([]), 'back': JSON.stringify([]), 'last_block': "", 'Unlocked': 0, 'time' : 0.25, 'nbr': 10, 'correct':0});
+      chrome.storage.sync.set({'number': 0, 'numberFlash': 0, 'websites':JSON.stringify([]), 'front': JSON.stringify([]),
+                            'back': JSON.stringify([]), 'last_block': "", 'Unlocked': 0, 'time' : 0.25, 'nbr': 10, 'correct':0});
       $('#numberFlash').text(0);
       $('#number').text(0);
       console.log("Procrastanki was successfully reinitialized.");

@@ -2,8 +2,8 @@ $(function()
 {
 	// Generate unordered array of flashcards
 	let numberFlash = 0;
-	let front;
-	let back;
+	let front =[];
+	let back = [];
 	let questions = 0; // Default number of sufficient questions
 	let total_correct = 0; // How many correct answers user has input
 	let location = 0; // Location of random question in array
@@ -68,10 +68,10 @@ $(function()
 		{
 			front.splice(location, 1);
 			back.splice(location, 1);
+			numberFlash--;
 
 			// Remeber total correct answers
 			total_correct++;
-
 			chrome.storage.sync.set({'correct':total_correct});
 
 			// Update page
@@ -94,11 +94,10 @@ $(function()
 		// Check if sufficient correct answer
 		if (total_correct == questions)
 		{
-			chrome.storage.sync.set({'correct':0})
 			chrome.storage.sync.get(['last_block', 'websites'], function(newUrl)
 			{
 				let d = new Date();
-				chrome.storage.sync.set({'Unlocked' : d.getTime()});
+				chrome.storage.sync.set({'Unlocked' : d.getTime(), 'correct':0});
 				chrome.tabs.update({url: newUrl.last_block});
 			});
 		}
