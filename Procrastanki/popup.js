@@ -1,23 +1,27 @@
 $(function()
 {
   // Display the number of websites blocked and number of flashcards near the "Blocked Sites" button and the "Make flashcards" button respectively
-  chrome.storage.sync.get(['number', 'numberFlash', 'websites', 'front', 'back', 'last_block', 'Unlocked', 'nbr', 'time'], function(blocks)
+  function Display()
   {
-    // Checks preivously blocked websites and conversely initatilizes storage for blocked websites
-    if(isNaN(blocks.numberFlash) || isNaN(blocks.number) || isNaN(blocks.nbr) || isNaN(blocks.time))
+    chrome.storage.sync.get(['number', 'numberFlash', 'websites', 'front', 'back', 'last_block', 'Unlocked', 'nbr', 'time'], function(blocks)
     {
-      chrome.storage.sync.clear();
-      chrome.storage.sync.set({'number': 0, 'numberFlash': 0, 'websites':JSON.stringify([]), 'front': JSON.stringify([]), 'back': JSON.stringify([]), 'last_block': "", 'Unlocked': 0, 'time' : 0.25, 'nbr': 10, 'correct': 0});
-      $('#numberFlash').text(0);
-      $('#number').text(0);
-    }
-    else
-    {
-      $('#numberFlash').text(blocks.numberFlash);
-      $('#number').text(blocks.number);
-      console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites, "Number of flashcards: ", blocks.numberFlash, " Front: ", blocks.front, "Back: ", blocks.back, "Last block: ", blocks.last_block, "Last time Unlock: ", blocks.Unlocked, "Procrasitation time: ", blocks.time, "Flashcards to unlock: ", blocks.nbr);
-    }
-  });
+      // Checks preivously blocked websites and conversely initatilizes storage for blocked websites
+      if(isNaN(blocks.numberFlash) || isNaN(blocks.number) || isNaN(blocks.nbr) || isNaN(blocks.time))
+      {
+        chrome.storage.sync.clear();
+        chrome.storage.sync.set({'number': 0, 'numberFlash': 0, 'websites':JSON.stringify([]), 'front': JSON.stringify([]), 'back': JSON.stringify([]), 'last_block': "", 'Unlocked': 0, 'time' : 0.25, 'nbr': 10, 'correct': 0});
+        $('#numberFlash').text(0);
+        $('#number').text(0);
+      }
+      else
+      {
+        $('#numberFlash').text(blocks.numberFlash);
+        $('#number').text(blocks.number);
+        console.log("Number of websites: ", blocks.number, "Websites blocked: ", blocks.websites, "Number of flashcards: ", blocks.numberFlash, " Front: ", blocks.front, "Back: ", blocks.back, "Last block: ", blocks.last_block, "Last time Unlock: ", blocks.Unlocked, "Procrasitation time: ", blocks.time, "Flashcards to unlock: ", blocks.nbr);
+      }
+    });
+  }
+  Display();
 
   // Load existant flashcards in the dropdownmenu
   function LoadFlash()
@@ -357,8 +361,7 @@ $(function()
   });
 
 
-  // Reinitialize
-  $('#Rein').click(function()
+  function Reinitialize()
   {
     chrome.storage.sync.get(['number', 'numberFlash'], function(blocks)
     {
@@ -371,5 +374,11 @@ $(function()
     $('#numberFlash').text(0);
     $('#number').text(0);
     console.log("Procrastanki was successfully reinitialized.");
+  }
+
+  // Reinitialize
+  $('#Rein').click(function()
+  {
+    Reinitialize();
   });
 });
