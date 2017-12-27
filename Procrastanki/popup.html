@@ -6,44 +6,46 @@
     <script src="popup.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
-  <body bgcolor="#FFFF81">
-    <h1>Procrastanki</h1>
-    <h4>Distracted?</h4>
-    <div class="wrapper">
-      <input class="text url_input" placeholder="Block a URL: hostname.domain" type="text" id="url" autocomplete="off">
-      <input class="button" type="submit" id="Block" value="Block">
-    </div>
-    <div class="wrapper">
-      <input type="button" class="button" value="Block Current Page" id="current" style="width:500px">
-    </div>
-    <div class="wrapper">
-      <input class="text flash_input" placeholder="Front flashcard" type="text" id="frontAdd" autocomplete="off">
-      <input class="text flash_input" placeholder="Back flashcard" type="text" id="backAdd" autocomplete="off">
-      <input type="button" class="button" value="Make Flashcard" id="AddFlash">
-    </div>
-    <div class="wrapper" id="div2">
-      <select id="websites_options" style="width:70%;max-width:50%;">
-        <option id="default" selected="selected">Select the website you want to unblock</option>
-      </select>
-      <input class="button" type="button" value="Unblock website" id="DelWeb">
-      <input type="button" class="button" value="Unblock all websites" id="sites">
-    </div>
-    <div class="wrapper" id="div1">
-      <select id="flashcards_options" style="width:70%;max-width:50%;">
-        <option id="default" selected="selected">Select the flashcard you want to delete</option>
-      </select>
-      <input class="button" type="button" value="Delete Flashcard" id="DelFlash">
-      <input class="button" type="button" value="Delete All Flashcards" id="DelAll">
-    </div>
-    <div class="wrapper">
-      Set block time in mins: <input class="text" placeholder="mins" type="number" id="time" autocomplete="off">
-      Set # flashcards to unlock: <input class="text" placeholder="#" type="number" id="nbr" autocomplete="off">
-      <input type="button" class="button" value="Set" id="set">
-    </div>
-    <div class="wrapper">
-      Total Flashcards: <span id="numberFlash" style="margin-right: 5px;"> 0 </span>
-      <input class="button" type="button" value="Reinitialize" id="Rein">
-      Total Blocked Sites: <span id="number"> 0 </span>
-    </div>
+  <body bgcolor="#553D67">
+    <font color="#F64C72">
+      <h1> Procrastanki </h1>
+      <h4> Distracted? </h4>
+      <div class="wrapper">
+        <input class="text url_input" placeholder="Block a URL: hostname.domain" type="text" id="url" autocomplete="off">
+        <input class="button" type="submit" id="Block" value="Block">
+      </div>
+      <div class="wrapper">
+        <input type="button" class="button" value="Block Current Page" id="current" style="width:500px">
+      </div>
+      <div class="wrapper" style="margin-bottom: 10px;">
+        <input class="text flash_input" placeholder="Front flashcard" type="text" id="frontAdd" autocomplete="off">
+        <input class="text flash_input" placeholder="Back flashcard" type="text" id="backAdd" autocomplete="off">
+        <input type="button" class="button" value="Make Flashcard" id="AddFlash">
+      </div>
+      <div class="wrapper" id="div2">
+        <select id="websites_options" style="width:70%;max-width:50%;">
+          <option id="default" selected="selected">Select the website you want to unblock</option>
+        </select>
+        <input class="button" type="button" value="Unblock website" id="DelWeb">
+        <input type="button" class="button" value="Unblock all websites" id="sites">
+      </div>
+      <div class="wrapper" id="div1" style="margin-bottom: 10px;">
+        <select id="flashcards_options" style="width:70%;max-width:50%;">
+          <option id="default" selected="selected">Select the flashcard you want to delete</option>
+        </select>
+        <input class="button" type="button" value="Delete Flashcard" id="DelFlash">
+        <input class="button" type="button" value="Delete All Flashcards" id="DelAll">
+      </div>
+      <div class="wrapper">
+        Set block time in mins: <input class="text" placeholder="mins" type="number" id="time" autocomplete="off">
+        Set # flashcards to unlock: <input class="text" placeholder="#" type="number" id="nbr" autocomplete="off">
+        <input type="button" class="button" value="Set" id="set">
+      </div>
+      <div class="wrapper">
+        Total Flashcards: <span id="numberFlash" style="margin-right: 5px;"> 0 </span>
+        <input class="button" type="button" value="Reinitialize" id="Rein">
+        Total Blocked Sites: <span id="number"> 0 </span>
+      </div>
+    </font>
   </body>
 </html>

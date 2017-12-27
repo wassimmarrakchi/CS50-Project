@@ -28,7 +28,7 @@ input {
 }
 
 .box {
-  background-color: aqua;
+  background-color: #D3D3D3;
   text-align: center;
   vertical-align: middle;
   line-height: 40px;
@@ -40,7 +40,7 @@ input {
 }
 
 .button {
-  background-color: aqua;
+  background-color: #D3D3D3;
   border: none;
   cursor: pointer;
   margin: 5px;
@@ -48,12 +48,12 @@ input {
 }
 
 .button:hover {
-  background: aqua;
+  background: #D3D3D3;
   opacity: 0.7;
 }
 
 .flash {
-  background-color: aqua;
+  background-color: #D3D3D3;
   width: 80%;
   height: 60px;
   border: none;
@@ -62,7 +62,7 @@ input {
 }
 
 .text {
-  background-color: aqua;
+  background-color: #D3D3D3;
   border: none;
   margin-right: 5px;
   height: 20px;
